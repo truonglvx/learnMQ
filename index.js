@@ -4,6 +4,7 @@ var amqpConn = null;
 
 var Hapi = require('hapi');
 var Nes = require('nes');
+var Uuid = require('uuid')
 
 var server = new Hapi.Server();
 server.connection({port:7777});
@@ -62,7 +63,7 @@ server.register([{ register: Nes, options: {onMessage, onConnection, onDisconnec
         path: '/publish',
         config: {
             handler: function (request, reply) {
-                server.publish('/machine/remoteconfig', {event: 'ahihi'});
+                server.publish('/machine/remoteconfig', {event: 'ahuhu'});
                 return reply('publish!!!!');
             }
         }
@@ -73,9 +74,9 @@ server.register([{ register: Nes, options: {onMessage, onConnection, onDisconnec
     server.start(function (err) {
         console.log(server.info);
 
-        // setInterval(() => {
-        //     server.publish('/machine/remoteconfig', {event: 'ahihi'});
-        // }, 2000);
+        setInterval(() => {
+            server.publish('/machine/remoteconfig', {event: Uuid.v4()});
+        }, 2000);
 
      });
 });
